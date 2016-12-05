@@ -1,4 +1,5 @@
 // #define DEBUG
+#define ENABLE_FILE_OUTPUT
 
 #define APPNAME "vRPM"
 #define STRMNAME "vRPM Listener"
@@ -24,7 +25,7 @@ int file_write(char* filename, uint32_t data[], size_t size)
     #endif
 
     FILE* fp = NULL;
-    if ((fp = fopen(filename, "a")) == NULL)
+    if ((fp = fopen(filename, "ab")) == NULL)
         return 1;
     if (fwrite(data, sizeof(uint32_t), size, fp) != size)
         return 1;
@@ -65,12 +66,14 @@ int main(int argc, char const *argv[])
             return 1;
         }
 
+        #ifdef ENABLE_FILE_OUTPUT
         if (file_write(outfile, buffer, BFRSIZE))
         {
             fprintf(stderr, __FILE__" : file_write() : %s\n", "write error");
             clean_exit(s);
             return 1;
         }
+        #endif
 
         #ifdef DEBUG
         printf("%s %ld\n", "block", ++counter);
