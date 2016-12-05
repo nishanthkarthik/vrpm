@@ -1,6 +1,8 @@
+// #define DEBUG
+
 #define APPNAME "vRPM"
 #define STRMNAME "vRPM Listener"
-#define BFRSIZE 1
+#define BFRSIZE 1000
 #define OUTFILE "record.raw"
 
 #include "stdio.h"
@@ -17,7 +19,10 @@ int clean_exit(pa_simple* s)
 
 int file_write(char* filename, uint32_t data[], size_t size)
 {
+    #ifdef DEBUG
     printf("%s %zu\n", "size", size);
+    #endif
+
     FILE* fp = NULL;
     if ((fp = fopen(filename, "a")) == NULL)
         return 1;
@@ -39,7 +44,7 @@ int main(int argc, char const *argv[])
     const pa_sample_spec samspec = {
         .format = PA_SAMPLE_S32LE,
         .rate = 48000,
-        .channels = 2
+        .channels = 1
     };
     
     s = pa_simple_new(NULL, APPNAME, PA_STREAM_RECORD, NULL, STRMNAME, &samspec, NULL, NULL, &err);
@@ -67,7 +72,9 @@ int main(int argc, char const *argv[])
             return 1;
         }
 
+        #ifdef DEBUG
         printf("%s %ld\n", "block", ++counter);
+        #endif
     }
 
     return 0;
