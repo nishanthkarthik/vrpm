@@ -1,9 +1,10 @@
 #define INFILE "record.raw"
 #define OUTFILE "record.csv"
-#define BFRLEN 10
+#define BFRLEN 10000
 
 #include "stdint.h"
 #include "stdio.h"
+#include "inttypes.h"
 
 int clean_exit(FILE* inf, FILE* outf)
 {
@@ -14,9 +15,14 @@ int clean_exit(FILE* inf, FILE* outf)
 	return 1;
 }
 
-int write_csv(FILE* out, uint32_t buf, size_t len)
+int write_csv(FILE* out, uint32_t buf[], size_t len)
 {
-
+	for (int i = 0; i < len; ++i)
+	{
+		if (fprintf(out, "%" PRIi32 "\n", buf[i]) < 0)
+			return 1;
+	}
+	return 0;
 }
 
 int main(int argc, char const *argv[])
@@ -38,13 +44,14 @@ int main(int argc, char const *argv[])
 	}
 
 	int size = 0;
-	int counter = 0;
+	long counter = 0;
 	while((size = fread(buffer, sizeof(uint32_t), BFRLEN, infile)) != 0)
 	{
 		counter += size;
-
+		write_csv(outfile, buffer, size);
+		printf("counter at %ld with size %d\n", counter, size);
 	}
-
+	printf("counter %ld\n", counter);
 	clean_exit(infile, outfile);
 	return 0;
 }
