@@ -1,6 +1,8 @@
 build/
 *.csv
 *.raw
+*.wav
+*.mp3
 
 # Object files
 *.o

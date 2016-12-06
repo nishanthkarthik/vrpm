@@ -6,7 +6,7 @@
 - use `pacat --format=s32le --rate=48000 --channels=1 record.raw`
 - adjust channel and rate settings accordingly
 
-# convert pcm to mp3
+# convert pcm to wav
 
 `ffmpeg -f s16le -ar 44.1k -ac 2 -i file.pcm file.wav`
 

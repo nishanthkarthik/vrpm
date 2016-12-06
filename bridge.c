@@ -1,5 +1,5 @@
-#define INFILE "record.raw"
-#define OUTFILE "record.csv"
+#define INFILE "engine.raw"
+#define OUTFILE "engine.csv"
 #define BFRLEN 10000
 
 #include "stdint.h"
