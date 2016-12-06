@@ -1,4 +1,5 @@
 build/
+matlab/*.*~
 *.csv
 *.raw
 *.wav

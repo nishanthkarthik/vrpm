@@ -16,3 +16,14 @@
 - -i file.pcm … input file
 - file.wav … output file
 
+# isolating fundamental frequency
+
+- initially tried with fft. unable to recognize the fundamental mode
+- From https://tunelab-world.com/enginerpm.pdf, autocorrelation was tried
+- enhanced autocorrelation in audacity gave accurate results over a small sample
+- *Enhanced Autocorrelation* is described in a paper by Tolonen and Karjalainen
+-- Run a normal autocorrelation over the signal
+-- Clip all results that are below zero
+-- Results should be stretched by a factor of two and subtracted from original signal
+-- Clip all results below zero
+
