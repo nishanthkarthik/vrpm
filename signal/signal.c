@@ -2,18 +2,17 @@
 #include "omp.h"
 #include "stdio.h"
 
-double autocorr_unit(double* arr, long lag, long n)
+double autocorr_unit(double* arr, long lag, size_t n)
 {
     double sum = 0;
 
-    for (long i = 0; i < n-1-lag; ++i)
+    for (size_t i = 0; i < n-1-lag; ++i)
         sum += arr[i] * arr[i+lag];
 
     return sum;
 }
 
-
-void autocorr(double* ip, double* op, long n)
+void autocorr(double* ip, double* op, size_t n)
 {
     #pragma omp parallel for
     for (size_t i = 0; i < n-1; ++i)
@@ -45,6 +44,7 @@ size_t readcsv(char* filename, double** arr, size_t n, size_t step)
             if (arr == NULL)
             {
                 fprintf(stderr, __FILE__" : readcsv() : %s\n", "realloc() is NULL");
+                fclose(infile);
                 return 0;
             }
             n += step;
@@ -53,5 +53,51 @@ size_t readcsv(char* filename, double** arr, size_t n, size_t step)
     }
     
     fprintf(stdout, __FILE__" : readcsv() : %s %ld\n", "count is ", count);
+    fclose(infile);
     return count;
+}
+
+void clip(double* arr, size_t n)
+{
+    #pragma omp parallel for
+    for (size_t i = 0; i < n; ++i)
+    {
+        if (arr[i] < 0)
+            arr[i] = 0.0;
+    }
+}
+
+void expand2(double* in, size_t n, double* out)
+{
+    #pragma omp parallel for
+    for (size_t i = 0; i < n; ++i)
+        out[2*i] = in[i];
+
+    #pragma omp parallel for
+    for (size_t i = 0; i < n-1; ++i)
+        out[2*i + 1] = (in[i] + in[i+1])/2.0;
+}
+
+void subtract(double* in, double* out, size_t n)
+{
+    #pragma omp parallel for
+    for (size_t i = 0; i < n; ++i)
+        in[i] = in[i] - out[i];
+}
+
+int writecsv(char* filename, double* in, size_t n)
+{
+    FILE* f;
+    f = fopen(filename, "w");
+    if (f == NULL)
+    {
+        fprintf(stderr, __FILE__" : writecsv() : %s\n", "fopen() is NULL");
+        return 1;
+    }
+    for (size_t i = 0; i < n; ++i)
+    {
+        fprintf(f, "%lf\n", in[i]);
+    }
+    fclose(f);
+    return 0;
 }

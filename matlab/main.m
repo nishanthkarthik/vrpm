@@ -1,20 +1,20 @@
-% n = length(src);
-% a = zeros(1,n-1);
-% samplingrate = 48000; % Hz
-% 
-% parfor i = 1:n-1
-%     a(i) = autocorr(src, i);
-% end
+n = length(src);
+a = zeros(1,n-1);
+samplingrate = 48000; % Hz
 
-fou_f = fft(src);
-s_f = fou_f .* conj(fou_f);
-r_f = ifft(s_f);
+parfor i = 1:n-1
+    a(i) = autocorr(src, i);
+end
+% 
+% fou_f = fft(src);
+% s_f = fou_f .* conj(fou_f);
+% r_f = ifft(s_f);
 
 %  DOI: 10.1109/89.876309 
 % Enhanced Standard Auto Correlation Function
 
-% a_clip = a; % Bruteforce autocorrelation
-a_clip = r_f; % FFT autocorrelation
+a_clip = a; % Bruteforce autocorrelation
+% a_clip = r_f; % FFT autocorrelation
 a_clip(a_clip<0) = 0;
 a_expanded = zeros(1,2*length(a_clip)-1);
 l_a_expanded = length(a_expanded);
