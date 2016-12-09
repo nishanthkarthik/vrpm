@@ -1,6 +1,7 @@
 CC=gcc
-CFLAGS=-lpulse -lpulse-simple
+CFLAGS=-lpulse -lpulse-simple -fopenmp
 CFLDBG=-std=c99 -pedantic -Wall -Werror -g
+CFLOPT=-O3
 
 .DEFAULT_GOAL := vrpm
 
@@ -16,4 +17,4 @@ bridge: bridge.o
 	$(CC) -o build/bridge bridge.o
 
 signalmain: signalmain.c signal.o signal.h
-	$(CC) $(CFLDBG) -o build/signalmain signal.o signalmain.c
+	$(CC) $(CFLAGS) $(CFLOPT) -o build/signalmain signal.o signalmain.c
