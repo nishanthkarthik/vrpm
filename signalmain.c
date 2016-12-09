@@ -3,8 +3,8 @@
 #include "stdlib.h"
 #include "inttypes.h"
 
-#define STARTALLOC 10000
-#define STEPALLOC 10000
+#define STARTALLOC 15000
+#define STEPALLOC 5000
 #define INFILE "matlab/clip.csv"
 
 size_t readcsv(char* filename, double** arr, size_t n, size_t step)
@@ -21,14 +21,15 @@ size_t readcsv(char* filename, double** arr, size_t n, size_t step)
     double temp = 0;
     printf("%s\n", "enter");
     
-    while (fscanf(infile, "%lf", &temp))
+    while (fscanf(infile, "%lf", &temp) == 1)
     {
         (*arr)[count] = temp;
-        printf("%ld -> %lf\n", count, (*arr)[count]);
+        // printf("%ld -> %lf\n", count, (*arr)[count]);
         ++count;
+
         if (count == n-5)
         {
-            *arr = (double*)realloc(*arr, n+step);
+            *arr = (double*)realloc(*arr, sizeof(double) * (n+step));
             if (arr == NULL)
             {
                 fprintf(stderr, __FILE__" : readcsv() : %s\n", "realloc() is NULL");

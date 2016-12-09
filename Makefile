@@ -16,4 +16,4 @@ bridge: bridge.o
 	$(CC) -o build/bridge bridge.o
 
 signalmain: signalmain.c signal.o signal.h
-	$(CC) $(CFLDBG) -o signalmain signal.o signalmain.c
+	$(CC) $(CFLDBG) -o build/signalmain signal.o signalmain.c

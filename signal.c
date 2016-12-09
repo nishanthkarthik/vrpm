@@ -17,5 +17,4 @@ void autocorr(double* ip, double* op, long n)
     #pragma omp parallel for
     for (long i = 0; i < n-1; ++i)
         op[i] = autocorr_unit(ip, i, n);
-
 }
