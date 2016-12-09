@@ -5,6 +5,7 @@
 
 #define STARTALLOC 15000
 #define STEPALLOC 5000
+#define SAMPRATE 48000
 #define INFILE "../matlab/clip.csv"
 #define OUTFILE "../matlab/clipc.csv"
 
@@ -51,7 +52,14 @@ int main(int argc, char const *argv[])
     fprintf(stdout, __FILE__" : main() : %s\n", "clipping done");
 
     writecsv(OUTFILE,cliparr, n);
-    fprintf(stdout, __FILE__" : main() : %s\n", "clipping done");
+    fprintf(stdout, __FILE__" : main() : %s\n", "writecsv done");
+
+    size_t i_max = maxidx(cliparr, n);
+    printf("%ld\n", i_max);
+    double f_fun = (double)SAMPRATE / i_max;
+    fprintf(stdout, __FILE__" : main() : %s\n", "maxindex done");
+
+    fprintf(stdout, __FILE__" : main() : %s %lf Hz\n", "fundamental frequency at", f_fun);
 
     free(expandarr);
     free(cliparr);

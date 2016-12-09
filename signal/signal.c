@@ -101,3 +101,20 @@ int writecsv(char* filename, double* in, size_t n)
     fclose(f);
     return 0;
 }
+
+size_t maxidx(double* arr, size_t n)
+{
+    size_t maxidx = 0;
+    double maxval = 0;
+
+    for (size_t i = 0; i < n; ++i)
+    {
+        if (arr[i] > maxval)
+        {
+            maxidx = i;
+            maxval = arr[i];
+        }
+    }
+
+    return maxidx;
+}
