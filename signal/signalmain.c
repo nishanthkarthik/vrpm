@@ -9,10 +9,10 @@
 #define STARTALLOC 15000
 #define STEPALLOC 5000
 #define SAMPRATE 48000
-#define INFILE "../matlab/clip.csv"
-#define OUTFILE "../matlab/clipc.csv"
-// #define INFILE "../audio/engine.csv"
-// #define OUTFILE "../audio/enginec.csv"
+// #define INFILE "../matlab/clip.csv"
+// #define OUTFILE "../matlab/clipc.csv"
+#define INFILE "../audio/ignition.csv"
+#define OUTFILE "../audio/ignitionc.csv"
 
 int main(int argc, char const *argv[])
 {

@@ -1,5 +1,5 @@
-#define INFILE "engine.raw"
-#define OUTFILE "engine.csv"
+#define INFILE "ignition.raw"
+#define OUTFILE "ignition.csv"
 #define BFRLEN 10000
 
 #include "stdint.h"
