@@ -2,6 +2,7 @@
 #include "stdio.h"
 #include "stdlib.h"
 #include "inttypes.h"
+#include "omp.h"
 
 #define STARTALLOC 15000
 #define STEPALLOC 5000
@@ -11,6 +12,8 @@
 
 int main(int argc, char const *argv[])
 {
+    // omp_set_num_threads(4);
+
     double* inarr = (double*)malloc(sizeof(double) * STARTALLOC);
     if (inarr == NULL)
     {
