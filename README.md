@@ -27,3 +27,11 @@
 -- Results should be stretched by a factor of two and subtracted from original signal
 -- Clip all results below zero
 
+# benchmarks
+
+For 88200 values, enhanced standard autocorrelation is done
+
+- **with openmp, O3, autocorrelation from fourier transform** -> 0.11 seconds 
+- **with openmp, O3** -> 2.31 seconds 
+- **without openmp** -> 4.66 seconds
+- **without openmp, O3** -> 13.8 seconds

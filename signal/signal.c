@@ -1,6 +1,7 @@
 #include "signal.h"
 #include "omp.h"
 #include "stdio.h"
+#include "fftw3.h"
 
 double autocorr_unit(double* arr, long lag, size_t n)
 {
@@ -17,6 +18,29 @@ void autocorr(double* ip, double* op, size_t n)
     #pragma omp parallel for
     for (size_t i = 0; i < n-1; ++i)
         op[i] = autocorr_unit(ip, i, n);
+}
+
+void autocorrft(double* ip, double* op, size_t n)
+{
+    fftw_plan fwdplan;
+    fftw_complex* fwd = malloc(n*sizeof(fftw_complex));
+    fwdplan = fftw_plan_dft_r2c_1d(n, ip, fwd, FFTW_ESTIMATE);
+    fftw_execute(fwdplan);
+
+    #pragma omp parallel for
+    for (size_t i = 0; i < n; ++i)
+    {
+        fwd[i][0] = fwd[i][0]*fwd[i][0] + fwd[i][1]*fwd[i][1];
+        fwd[i][1] = 0;
+    }
+
+    fftw_plan invplan;
+    invplan = fftw_plan_dft_c2r_1d(n, fwd, op, FFTW_ESTIMATE);
+    fftw_execute(invplan);
+
+    fftw_destroy_plan(fwdplan);
+    fftw_destroy_plan(invplan);
+    fftw_free(fwd);
 }
 
 size_t readcsv(char* filename, double** arr, size_t n, size_t step)
@@ -108,6 +132,23 @@ size_t maxidx(double* arr, size_t n)
     double maxval = 0;
 
     for (size_t i = 0; i < n; ++i)
+    {
+        if (arr[i] > maxval)
+        {
+            maxidx = i;
+            maxval = arr[i];
+        }
+    }
+
+    return maxidx;
+}
+
+size_t maxidxft(double* arr, size_t n)
+{
+    size_t maxidx = 0;
+    double maxval = 0;
+
+    for (size_t i = LOWLIMRPM; i < MIN(n,HIGHLIMRPM); ++i)
     {
         if (arr[i] > maxval)
         {

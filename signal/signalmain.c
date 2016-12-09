@@ -4,11 +4,15 @@
 #include "inttypes.h"
 #include "omp.h"
 
+#define FFT_YES
+
 #define STARTALLOC 15000
 #define STEPALLOC 5000
 #define SAMPRATE 48000
 #define INFILE "../matlab/clip.csv"
 #define OUTFILE "../matlab/clipc.csv"
+// #define INFILE "../audio/engine.csv"
+// #define OUTFILE "../audio/enginec.csv"
 
 int main(int argc, char const *argv[])
 {
@@ -32,7 +36,12 @@ int main(int argc, char const *argv[])
         return 1;
     }    
 
+    #ifdef FFT_YES
+    autocorrft(inarr, cliparr, n);
+    #else
     autocorr(inarr, cliparr, n);
+    #endif
+
     fprintf(stdout, __FILE__" : main() : %s\n", "autocorrelation done");
     
     clip(cliparr, n);
@@ -56,13 +65,16 @@ int main(int argc, char const *argv[])
 
     writecsv(OUTFILE,cliparr, n);
     fprintf(stdout, __FILE__" : main() : %s\n", "writecsv done");
-
+    
+    #ifdef FFT_YES
+    size_t i_max = maxidxft(cliparr, n);
+    #else
     size_t i_max = maxidx(cliparr, n);
-    printf("%ld\n", i_max);
+    #endif
+
     double f_fun = (double)SAMPRATE / i_max;
     fprintf(stdout, __FILE__" : main() : %s\n", "maxindex done");
-
-    fprintf(stdout, __FILE__" : main() : %s %lf Hz\n", "fundamental frequency at", f_fun);
+    fprintf(stdout, __FILE__" : main() : %s %lf Hz, %lf RPM\n", "fundamental frequency at", f_fun, 60*f_fun);
 
     free(expandarr);
     free(cliparr);

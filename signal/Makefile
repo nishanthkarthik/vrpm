@@ -1,5 +1,5 @@
 TARGET = ../build/signalmain
-LIBS = -lpulse -lpulse-simple -fopenmp
+LIBS = -lpulse -lpulse-simple -fopenmp -lfftw3
 CC = gcc
 CFLAGS = -Wall -O3
 
