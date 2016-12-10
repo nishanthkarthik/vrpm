@@ -29,7 +29,7 @@
 
 # benchmarks
 
-For 88200 values, enhanced standard autocorrelation is done
+For 88200 values (sample for ~2 seconds at 48KHz sampling rate), enhanced standard autocorrelation is done
 
 - **with openmp, O3, autocorrelation from fourier transform** -> 0.11 seconds 
 - **with openmp, O3** -> 2.31 seconds 
