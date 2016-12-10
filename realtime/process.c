@@ -74,7 +74,7 @@ double detect_freq(double* inarr, size_t n)
 
     double f_fun = (double)SAMPLINGRATE / i_max;
     FPRINTFD((stdout, __FILE__" : main() : %s\n", "maxindex done"));
-    fprintf(stdout, __FILE__" : main() : %s %lf Hz, %lf RPM\n", "fundamental frequency at", f_fun, 60*f_fun);
+    // fprintf(stdout, __FILE__" : main() : %s %lf Hz, %lf RPM\n", "fundamental frequency at", f_fun, 60*f_fun);
 
     free(expandarr);
     free(cliparr);
